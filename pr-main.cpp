@@ -38,5 +38,11 @@ int main(){
 		cout << "To: " << newpage -> as_string() << '\n';
 	
 	}
+	
+	Web internet(netsize);
+	internet.create_random_links(avglinks);	
+
+	
+
 	return 0;
 }
