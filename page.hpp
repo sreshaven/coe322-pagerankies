@@ -10,11 +10,15 @@ using std::endl;
 using std::vector;
 using std::shared_ptr;
 using std::make_shared;
+using std::rand();
+using std::srand();
+
 
 class Page {
 	private:
 		string name;
 		vector<shared_ptr<Page>> linksVector;
+		int global_ID;
 	public:
 		Page(string inputName){
 			name = inputName;
@@ -22,6 +26,10 @@ class Page {
 
 		string getName(){
 			return name;
+		}
+	
+		void set_global_id(int inputNum){
+			global_ID = inputNum;
 		}
 		
 		string as_string(){

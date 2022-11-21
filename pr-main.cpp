@@ -39,9 +39,13 @@ int main(){
 	
 	}
 	
+	int netsize = 10;
+	int avglinks = 10;
+
 	Web internet(netsize);
 	internet.create_random_links(avglinks);	
-
+	
+	internet.random_walk(internet.all_pages()[0], 5);
 	
 
 	return 0;
