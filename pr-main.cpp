@@ -16,8 +16,6 @@ int main(){
 	
 	// exercise 51.1
 	auto homepage = make_shared<Page>("My Home Page");
-	cout << "Homepage has no links yet: " << '\n';
-	cout << homepage -> as_string() << '\n';
 
 	// add links to the page as a vector, method click follows the link
 	auto utexas = make_shared<Page>("University Home Page");

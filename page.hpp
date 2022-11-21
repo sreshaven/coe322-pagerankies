@@ -17,7 +17,7 @@ class Page {
 	public:
 		Page(string inputName){
 			name = inputName;
-		}
+		};
 
 		string getName(){
 			return name;
@@ -32,7 +32,7 @@ class Page {
 					output += '\n';
 				}
 			}
-			return output
+			return output;
 		}
 	
 		void add_link(shared_ptr<Page> linkedPage){
@@ -41,11 +41,12 @@ class Page {
 	
 		shared_ptr<Page> random_click(){
 			if(linksVector.empty()){
-				return Page("this page has no links")		
+				auto output = make_shared<Page>("this page has no links");
+				return output;
 			}
 			else{
-				return linksVector[rand() % linksVector.size()]
+				return linksVector[rand() % linksVector.size()];
 			}
 		}
 
-}
+};
