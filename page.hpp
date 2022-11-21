@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <cstdlib>
 #include "link.hpp"
 #pragma once
 using std::string;
