@@ -50,6 +50,13 @@ int main(){
 	
 	internet.random_walk(internet.all_pages()[0], 5);
 	
+	vector<int> landing_counts(internet.number_of_pages(), 0);
+	for (auto page : internet.all_pages()) {
+		for (int iwalk=0; iwalk<5; iwalk++){
+			auto endpage = internet.random_walk(page, 2*avglinks);
+			landing_counts.at(endpage->global_ID())++;
+		}
+	}
 
 	return 0;
 }
