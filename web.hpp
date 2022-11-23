@@ -38,18 +38,26 @@ class Web {
 			for (int i = 0; i < numOfLinks; i++){
 				int randNum1 = rand() % pagesVector.size();
 				int randNum2 = rand() % pagesVector.size();
+				while (randNum1 == randNum2){
+					randNum1 = rand() % pagesVector.size();
+                                	randNum2 = rand() % pagesVector.size();
+				}
 				pagesVector[randNum1]->add_link(pagesVector[randNum2]);
 			}
 		}
 
 		shared_ptr<Page> random_walk(shared_ptr<Page> inputPage, int length){
 			auto currentPage = inputPage;
-			cout << "From: " << currentPage->as_string() << endl;	
+			auto endPage = inputPage;
+			// cout << "From: " << currentPage->as_string() << endl;	
 			for (int i = 0; i < length; i++){
 				currentPage = currentPage->random_click();
-				cout << "To: " << currentPage->as_string() << endl;		
+				if (currentPage->global_ID() != -1){
+					endPage = currentPage 
+				}
+				// cout << "To: " << currentPage->as_string() << endl;		
 			}
-			return currentPage;
+			return endPage;
 		}	
 
 };

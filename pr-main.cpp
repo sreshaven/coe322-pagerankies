@@ -8,11 +8,14 @@
 #include "web.hpp"
 #include <memory>
 #include <vector>
+#include <ctime>
+#include <cstdlib>
 using std::shared_ptr;
 using std::make_shared;
 
 
 int main(){
+	srand(time(NULL));
 	
 	// exercise 51.1
 	auto homepage = make_shared<Page>("My Home Page");

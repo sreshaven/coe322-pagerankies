@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include <cstdlib>
+#include <ctime>
 #include "link.hpp"
 #pragma once
 using std::string;
@@ -10,8 +11,8 @@ using std::endl;
 using std::vector;
 using std::shared_ptr;
 using std::make_shared;
-using std::rand();
-using std::srand();
+using std::rand;
+using std::srand;
 
 
 class Page {
@@ -22,6 +23,7 @@ class Page {
 	public:
 		Page(string inputName){
 			name = inputName;
+			global_ID = -1;
 		};
 
 		string getName(){
@@ -56,6 +58,10 @@ class Page {
 			else{
 				return linksVector[rand() % linksVector.size()];
 			}
+		}
+
+		int global_ID(){
+			return global_ID;
 		}
 
 };
