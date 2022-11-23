@@ -16,7 +16,7 @@ using std::make_shared;
 
 int main(){
 	srand(time(NULL));
-	
+	/* 
 	// exercise 51.1
 	auto homepage = make_shared<Page>("My Home Page");
 
@@ -40,21 +40,30 @@ int main(){
 		auto newpage = homepage -> random_click();
 		cout << "To: " << newpage -> as_string() << '\n';
 	
-	}
+	} */
 	
 	int netsize = 10;
-	int avglinks = 10;
+	int avglinks = 20;
 
 	Web internet(netsize);
 	internet.create_random_links(avglinks);	
 	
-	internet.random_walk(internet.all_pages()[0], 5);
+	// internet.random_walk(internet.all_pages()[0], 5);
 	
 	vector<int> landing_counts(internet.number_of_pages(), 0);
 	for (auto page : internet.all_pages()) {
+		cout << "Starting page: " << page -> as_string() << '\n';	
 		for (int iwalk=0; iwalk<5; iwalk++){
 			auto endpage = internet.random_walk(page, 2*avglinks);
 			landing_counts.at(endpage->global_ID())++;
+		}
+	}
+
+	for (int i = 0; i < landing_counts.size(); i++){
+		if (i == landing_counts.size() - 1){
+			cout << landing_counts.at(i) << '\n';
+		} else {
+			cout << landing_counts.at(i) << ',';
 		}
 	}
 

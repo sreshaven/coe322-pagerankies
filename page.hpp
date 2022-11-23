@@ -19,11 +19,11 @@ class Page {
 	private:
 		string name;
 		vector<shared_ptr<Page>> linksVector;
-		int global_ID;
+		int global_id;
 	public:
 		Page(string inputName){
 			name = inputName;
-			global_ID = -1;
+			global_id = -1;
 		};
 
 		string getName(){
@@ -31,7 +31,7 @@ class Page {
 		}
 	
 		void set_global_id(int inputNum){
-			global_ID = inputNum;
+			global_id = inputNum;
 		}
 		
 		string as_string(){
@@ -61,7 +61,16 @@ class Page {
 		}
 
 		int global_ID(){
-			return global_ID;
+			return global_id;
+		}
+
+		bool page_is_link(shared_ptr<Page> linkedPage){
+			for (int i = 0; i < linksVector.size(); i++){
+				if (linksVector[i]->global_ID() == linkedPage->global_ID()){
+					return true;
+				}	
+			}
+			return false;
 		}
 
 };

@@ -38,7 +38,7 @@ class Web {
 			for (int i = 0; i < numOfLinks; i++){
 				int randNum1 = rand() % pagesVector.size();
 				int randNum2 = rand() % pagesVector.size();
-				while (randNum1 == randNum2){
+				while (randNum1 == randNum2 || pagesVector[randNum1]->page_is_link(pagesVector[randNum2])){
 					randNum1 = rand() % pagesVector.size();
                                 	randNum2 = rand() % pagesVector.size();
 				}
@@ -53,7 +53,7 @@ class Web {
 			for (int i = 0; i < length; i++){
 				currentPage = currentPage->random_click();
 				if (currentPage->global_ID() != -1){
-					endPage = currentPage 
+					endPage = currentPage; 
 				}
 				// cout << "To: " << currentPage->as_string() << endl;		
 			}
