@@ -80,9 +80,8 @@ int main(){
 	}
 
 	
-	probability_distribution random_state(internet.number_of_pages())
+	probability_distribution random_state(internet.number_of_pages());
 	random_state.set_random();
-	cout << "Initial distribution: " << random_state.as_string() << '\n';	
-
+	cout << "Initial Distribution: " << random_state.as_string() << '\n';
 	return 0;
 }
