@@ -57,16 +57,17 @@ class Web {
 
 		shared_ptr<Page> random_walk(shared_ptr<Page> inputPage, int length){
 			auto currentPage = inputPage;
-			auto endPage = inputPage;
+			int randNum = rand() % pagesVector.size();
 			// cout << "From: " << currentPage->as_string() << endl;	
 			for (int i = 0; i < length; i++){
 				currentPage = currentPage->random_click();
-				if (currentPage->global_ID() != -1){
-					endPage = currentPage; 
+				if (currentPage->global_ID() == -1){
+					randNum = rand() % pagesVector.size();
+					currentPage = pagesVector[randNum]; 
 				}
 				// cout << "To: " << currentPage->as_string() << endl;		
 			}
-			return endPage;
+			return currentPage;
 		}
 
 		vector<int> sssp(shared_ptr<Page> inputPage){
