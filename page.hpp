@@ -73,4 +73,8 @@ class Page {
 			return false;
 		}
 
+		vector<shared_ptr<Page>> get_neighbors(){
+			return linksVector;
+		}
+
 };

@@ -49,7 +49,7 @@ int main(){
 	internet.create_random_links(avglinks);	
 	
 	// internet.random_walk(internet.all_pages()[0], 5);
-	
+	// exercise 6.5
 	vector<int> landing_counts(internet.number_of_pages(), 0);
 	for (auto page : internet.all_pages()) {
 		cout << "Starting page: " << page -> as_string() << '\n';	
@@ -58,7 +58,7 @@ int main(){
 			landing_counts.at(endpage->global_ID())++;
 		}
 	}
-
+	
 	for (int i = 0; i < landing_counts.size(); i++){
 		if (i == landing_counts.size() - 1){
 			cout << landing_counts.at(i) << '\n';
@@ -66,6 +66,19 @@ int main(){
 			cout << landing_counts.at(i) << ',';
 		}
 	}
+	
+	// exercise 6.6
+	vector<int> distances = internet.sssp(internet.all_pages()[0]);
+	cout << "Distances from page0: " << '\n';
+	for (int i = 0; i < distances.size(); i++){
+		if (i == distances.size() - 1){
+                        cout << distances.at(i) << '\n';
+                } else {
+                        cout << distances.at(i) << ',';
+                }
+	}
+
+	
 
 	return 0;
 }

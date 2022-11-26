@@ -11,6 +11,15 @@ using std::vector;
 using std::shared_ptr;
 using std::make_shared;
 
+bool page_in_vector(vector<shared_ptr<Page>> inputVector, shared_ptr<Page> inputPage){
+	for (int i = 0; i < inputVector.size(); i++){
+		if (inputVector[i]->global_ID() == inputPage->global_ID()){
+			return true;
+		}
+	}
+	return false;
+}
+
 class Web {
         private:
     		int numOfPages;
@@ -58,6 +67,30 @@ class Web {
 				// cout << "To: " << currentPage->as_string() << endl;		
 			}
 			return endPage;
+		}
+
+		vector<int> sssp(shared_ptr<Page> inputPage){
+			vector<shared_ptr<Page>> current_front;
+			current_front.push_back(inputPage);
+			vector<int> distances(numOfPages, 0);
+			while (true){
+				vector<shared_ptr<Page>> next_front;
+				for (auto node : current_front){
+					for (auto neighbor : node->get_neighbors()){
+						if (!page_in_vector(current_front, neighbor) && distances[neighbor->global_ID()] == 0 && neighbor->global_ID() != inputPage->global_ID()){
+							distances[neighbor->global_ID()] = distances[node->global_ID()]+1;
+							next_front.push_back(neighbor);
+						}
+					}
+				}
+				if (next_front.size() == 0){
+					break;
+				}
+				else {
+					current_front = next_front;
+				}
+			}
+			return distances;
 		}	
 
 };
