@@ -6,6 +6,7 @@
 #include "page.hpp"
 #include "link.hpp"
 #include "web.hpp"
+#include "pd.hpp"
 #include <memory>
 #include <vector>
 #include <ctime>
@@ -79,6 +80,7 @@ int main(){
 	}
 
 	
+	// set up probability dist	
 
 	return 0;
 }
