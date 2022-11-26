@@ -6,6 +6,7 @@
 #include "page.hpp"
 #include "link.hpp"
 #include "web.hpp"
+#include "pd.hpp"
 #include <memory>
 #include <vector>
 #include <ctime>
@@ -78,7 +79,9 @@ int main(){
                 }
 	}
 
-	
+	probability_distribution random_state(internet.number_of_pages())
+	random_state.set_random();
+	cout << "Initial distribution: " << random_state.as_string() << '\n';	
 
 	return 0;
 }
