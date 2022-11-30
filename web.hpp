@@ -2,6 +2,8 @@
 #include <memory>
 #include <vector>
 #include "page.hpp"
+#include "functions.hpp"
+#include "pd.hpp"
 #include <cstdlib>
 #pragma once
 using std::string;
@@ -12,12 +14,12 @@ using std::shared_ptr;
 using std::make_shared;
 
 bool page_in_vector(vector<shared_ptr<Page>> inputVector, shared_ptr<Page> inputPage){
-	for (int i = 0; i < inputVector.size(); i++){
-		if (inputVector[i]->global_ID() == inputPage->global_ID()){
-			return true;
-		}
-	}
-	return false;
+        for (int i = 0; i < inputVector.size(); i++){
+                if (inputVector[i]->global_ID() == inputPage->global_ID()){
+                        return true;
+                }
+        }
+        return false;
 }
 
 class Web {
@@ -45,11 +47,11 @@ class Web {
 		
 		void create_random_links(int numOfLinks){
 			for (int i = 0; i < numOfLinks; i++){
-				int randNum1 = rand() % pagesVector.size();
-				int randNum2 = rand() % pagesVector.size();
+				int randNum1 = realrandom_int(pagesVector.size());
+				int randNum2 = realrandom_int(pagesVector.size());
 				while (randNum1 == randNum2 || pagesVector[randNum1]->page_is_link(pagesVector[randNum2])){
-					randNum1 = rand() % pagesVector.size();
-                                	randNum2 = rand() % pagesVector.size();
+					randNum1 = realrandom_int(pagesVector.size());
+                                	randNum2 = realrandom_int(pagesVector.size());
 				}
 				pagesVector[randNum1]->add_link(pagesVector[randNum2]);
 			}
@@ -62,7 +64,7 @@ class Web {
 			for (int i = 0; i < length; i++){
 				currentPage = currentPage->random_click();
 				if (currentPage->global_ID() == -1){
-					randNum = rand() % pagesVector.size();
+					randNum = realrandom_int(pagesVector.size());
 					currentPage = pagesVector[randNum]; 
 				}
 				// cout << "To: " << currentPage->as_string() << endl;		
@@ -93,5 +95,22 @@ class Web {
 			}
 			return distances;
 		}	
+
+		probability_distribution globalclick(probability_distribution currentstate){
+			probability_distribution outputPD(numOfPages);
+			for (int i = 0; i < numOfPages; i++){
+				auto currentPage = pagesVector[i];
+				if (currentPage->get_neighbors().size() == 0) {
+					int randNum = realrandom_int(pagesVector.size());			
+					double newPValue = outputPD.get_pvalue(randNum) + outputPD.get_pvalue(currentPage->global_ID());
+                                        outputPD.set_pvalue(randNum, newPValue);
+				}
+				for (auto neighbor : currentPage->get_neighbors()){
+					double newPValue = outputPD.get_pvalue(neighbor->global_ID()) + (currentstate.get_pvalue(currentPage->global_ID()) / currentPage->get_neighbors().size());	
+					outputPD.set_pvalue(neighbor->global_ID(), newPValue);
+				}		
+			} 
+			return outputPD;
+		}
 
 };

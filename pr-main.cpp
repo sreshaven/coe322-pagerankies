@@ -4,19 +4,22 @@
 #include <iostream>
 #include <vector>
 #include "page.hpp"
-#include "link.hpp"
+#include "functions.hpp"
 #include "web.hpp"
 #include "pd.hpp"
 #include <memory>
 #include <vector>
 #include <ctime>
 #include <cstdlib>
+#include <random>
+#include <iomanip>
 using std::shared_ptr;
 using std::make_shared;
 
 
 int main(){
-	srand(time(NULL));
+	// srand(time(NULL));
+
 	/* 
 	// exercise 51.1
 	auto homepage = make_shared<Page>("My Home Page");
@@ -43,13 +46,13 @@ int main(){
 	
 	} */
 	
+
 	int netsize = 10;
 	int avglinks = 20;
 
 	Web internet(netsize);
 	internet.create_random_links(avglinks);	
 	
-	// internet.random_walk(internet.all_pages()[0], 5);
 	// exercise 6.5
 	vector<int> landing_counts(internet.number_of_pages(), 0);
 	for (auto page : internet.all_pages()) {
@@ -59,7 +62,7 @@ int main(){
 			landing_counts.at(endpage->global_ID())++;
 		}
 	}
-	
+	cout << "Landing counts: ";	
 	for (int i = 0; i < landing_counts.size(); i++){
 		if (i == landing_counts.size() - 1){
 			cout << landing_counts.at(i) << '\n';
@@ -69,19 +72,44 @@ int main(){
 	}
 	
 	// exercise 6.6
-	vector<int> distances = internet.sssp(internet.all_pages()[0]);
-	cout << "Distances from page0: " << '\n';
-	for (int i = 0; i < distances.size(); i++){
-		if (i == distances.size() - 1){
-                        cout << distances.at(i) << '\n';
-                } else {
-                        cout << distances.at(i) << ',';
-                }
+	for (int i = 0; i < internet.all_pages().size(); i++){
+		vector<int> distances = internet.sssp(internet.all_pages()[i]);
+        	cout << "Distances from " << internet.all_pages()[i]->getName() << ": ";
+        	for (int i = 0; i < distances.size(); i++){
+                	if (i == distances.size() - 1){
+                        	cout << distances.at(i) << '\n';
+                	} else {
+                        	cout << distances.at(i) << ',';
+                	}
+        	}
 	}
-
 	
+	cout << std::fixed;
+ 	cout.precision(4);
+	// exercise 6.7	
 	probability_distribution random_state(internet.number_of_pages());
 	random_state.set_random();
 	cout << "Initial Distribution: " << random_state.as_string() << '\n';
+	
+	// exercise 6.8
+	probability_distribution test1(internet.number_of_pages());
+	test1.set_pvalue(0, 1.0);
+	probability_distribution output1 = internet.globalclick(test1);
+	cout << "Test 1 PD Input: " << test1.as_string() << '\n';
+	cout << "Output of Test 1: " << output1.as_string() << '\n';
+
+	probability_distribution output2 = internet.globalclick(output1);
+        cout << "Test 2 PD Input: " << output1.as_string() << '\n';
+        cout << "Output of Test 2: " << output2.as_string() << '\n';
+	
+	probability_distribution random_state2(internet.number_of_pages());
+        random_state2.set_random();
+	for (int i = 0; i < 10; i++){
+		probability_distribution output3 = internet.globalclick(random_state2);
+		cout << "Output: " << output3.as_string() << '\n';
+		random_state2 = output3;
+	}
+		
 	return 0;
+	
 }

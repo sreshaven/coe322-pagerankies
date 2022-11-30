@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "link.hpp"
+#include "functions.hpp"
 #pragma once
 using std::string;
 using std::cout;
@@ -56,7 +57,7 @@ class Page {
 				return output;
 			}
 			else{
-				return linksVector[rand() % linksVector.size()];
+				return linksVector[realrandom_int(linksVector.size())];
 			}
 		}
 

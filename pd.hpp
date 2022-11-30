@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include <cstdlib>
+#include "functions.hpp"
 #pragma once
 using std::string;
 using std::cout;
@@ -23,7 +24,7 @@ class probability_distribution{
 		void set_random(){
 			vector<double> count(distSize, 0);
 			for (int i = 0; i < 100; i++){
-				int num = rand() % distSize;
+				int num = realrandom_int(distSize);
 				count[num] = count[num] + 1.0;
 			}
 			
@@ -43,6 +44,10 @@ class probability_distribution{
 		// access a specific element
 		double get_pvalue(int index){
 			return pvector[index];
+		}
+	
+		void set_pvalue(int index, double newPValue){
+			pvector[index] = newPValue;
 		}
 		//set whole distribution to random and normalize so sum of prob is 1
 		void normalize(){
