@@ -3,7 +3,6 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
-#include "link.hpp"
 #include "functions.hpp"
 #pragma once
 using std::string;

@@ -53,7 +53,7 @@ int main(){
 	Web internet(netsize);
 	internet.create_random_links(avglinks);	
 	
-	// exercise 6.5
+	// exercise 51.5
 	vector<int> landing_counts(internet.number_of_pages(), 0);
 	for (auto page : internet.all_pages()) {
 		cout << "Starting page: " << page -> as_string() << '\n';	
@@ -71,7 +71,7 @@ int main(){
 		}
 	}
 	
-	// exercise 6.6
+	// exercise 51.6
 	for (int i = 0; i < internet.all_pages().size(); i++){
 		vector<int> distances = internet.sssp(internet.all_pages()[i]);
         	cout << "Distances from " << internet.all_pages()[i]->getName() << ": ";
@@ -86,12 +86,12 @@ int main(){
 	
 	cout << std::fixed;
  	cout.precision(4);
-	// exercise 6.7	
+	// exercise 51.7	
 	probability_distribution random_state(internet.number_of_pages());
 	random_state.set_random();
 	cout << "Initial Distribution: " << random_state.as_string() << '\n';
 	
-	// exercise 6.8
+	// exercise 51.8
 	probability_distribution test1(internet.number_of_pages());
 	test1.set_pvalue(0, 1.0);
 	probability_distribution output1 = internet.globalclick(test1);
@@ -104,11 +104,30 @@ int main(){
 	
 	probability_distribution random_state2(internet.number_of_pages());
         random_state2.set_random();
-	for (int i = 0; i < 10; i++){
+	for (int i = 0; i < netsize * 1.5; i++){
 		probability_distribution output3 = internet.globalclick(random_state2);
 		cout << "Output: " << output3.as_string() << '\n';
 		random_state2 = output3;
 	}
+	
+	// exercise 51.10
+	internet.add_pages((avglinks * 4) + 1);
+
+	for (int i = netsize + 1; i < internet.all_pages().size(); i++){
+		internet.all_pages()[i]->add_link(internet.all_pages()[netsize]);
+	}
+
+	/* for (auto page : internet.all_pages()) {
+                cout << "Starting page: " << page -> as_string() << '\n';
+        } */
+
+	probability_distribution random_state3(internet.number_of_pages());
+        random_state3.set_random();
+        for (int i = 0; i < 5; i++){
+                probability_distribution output3 = internet.globalclick(random_state2);
+                random_state3 = output3;
+        }
+	cout << "Output: " << random_state3.as_string() << '\n';	
 		
 	return 0;
 	

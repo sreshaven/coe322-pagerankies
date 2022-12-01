@@ -37,6 +37,20 @@ class Web {
 			}
 		};
 
+		void add_page(){
+			string name = "page" + std::to_string(numOfPages);
+                        auto page = make_shared<Page>(name);
+                        page->set_global_id(numOfPages);
+                        pagesVector.push_back(page);
+			numOfPages += 1;
+		}
+
+		void add_pages(int num){
+			for (int i = 0; i < num; i++){
+				add_page();
+			}
+		}
+
 		int number_of_pages(){
 			return numOfPages;
 		}
@@ -109,7 +123,8 @@ class Web {
 					double newPValue = outputPD.get_pvalue(neighbor->global_ID()) + (currentstate.get_pvalue(currentPage->global_ID()) / currentPage->get_neighbors().size());	
 					outputPD.set_pvalue(neighbor->global_ID(), newPValue);
 				}		
-			} 
+			}
+			outputPD.normalize(); 
 			return outputPD;
 		}
 

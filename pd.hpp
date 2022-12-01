@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 #include <cstdlib>
+#include <string>
 #include "functions.hpp"
 #pragma once
 using std::string;
@@ -36,7 +37,7 @@ class probability_distribution{
 		string as_string(){
 			string output = "";
 			for (int i = 0; i < distSize; i++){
-				cout << std::to_string(i) + ":" + std::to_string(pvector[i]) + ", ";
+				cout << std::to_string(i) + ":" + std::to_string(pvector[i]).substr(0, 5) + ", ";
 				
 			}	
 			return output;
@@ -59,6 +60,15 @@ class probability_distribution{
 				pvector[j] = pvector[j] / ptotal;
 			}
 		}
+
+		/* vector<vector<double>> rankp(){
+			vector<vector<double>> rankedP;
+			for(int i = 0; i < distSize; i++){
+				rankedP.push_back([i, pvector[i]]);
+			}
+			std::sort(rankedP.begin(), rankedP.end(), [](const std::vector<double>& a, const std::vector<double>& b) {  return a[1] < b[1];);
+			return rankedP;
+		} */
 
 
 }; 
