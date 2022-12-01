@@ -135,6 +135,9 @@ int main(){
 		cout << std::to_string((int)rankedP[i][1]) << ", ";	
 	}
 	cout << '\n';
+	
+	// internet.makeMatrix();
+
 	return 0;
 	
 }

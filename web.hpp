@@ -26,6 +26,7 @@ class Web {
         private:
     		int numOfPages;
                 vector<shared_ptr<Page>> pagesVector;
+		vector<vector<int>> webMatrix;
         public:
                 Web(int inputNum){
                         numOfPages = inputNum;
@@ -127,5 +128,34 @@ class Web {
 			outputPD.normalize(); 
 			return outputPD;
 		}
+
+		vector<vector<int>> makeMatrix(){
+			vector<int> matrix;
+			matrix.resize(numOfPages);
+			vector<vector<int>> outputMatrix;
+			for (int i = 0; i < numOfPages; i++){
+				outputMatrix.push_back(matrix);
+			}
+			for (auto page : pagesVector){
+				for (auto neighbor : page->get_neighbors()){
+					outputMatrix[page->global_ID()][neighbor->global_ID()] = 1;
+				}
+			}
+			for (int i = 0; i < numOfPages; i++){
+				for (int j = 0; j < numOfPages; j++){
+					cout << outputMatrix[i][j];
+				}
+				cout << '\n';
+			}
+			webMatrix = outputMatrix;
+			return outputMatrix;
+		}
+
+		probability_distribution globalclick2(probability_distribution currentstate){
+                        probability_distribution outputPD(numOfPages);
+                	vector<vector<int>> adjMatrix = makeMatrix();
+			outputPD.normalize();        
+			return outputPD;
+                }
 
 };
