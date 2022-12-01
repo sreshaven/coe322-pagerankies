@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <algorithm>
 #include <vector>
 #include <cstdlib>
 #include <string>
@@ -61,15 +62,15 @@ class probability_distribution{
 			}
 		}
 
-		/* vector<vector<double>> rankp(){
+		vector<vector<double>> rankp(){
 			vector<vector<double>> rankedP;
 			for(int i = 0; i < distSize; i++){
-				rankedP.push_back([i, pvector[i]]);
+				vector<double> newinput{pvector[i], (double)i};
+				rankedP.push_back(newinput);
 			}
-			std::sort(rankedP.begin(), rankedP.end(), [](const std::vector<double>& a, const std::vector<double>& b) {  return a[1] < b[1];);
+			std::sort(rankedP.begin(), rankedP.end());
+			std::reverse(rankedP.begin(), rankedP.end());
 			return rankedP;
-		} */
-
-
+		}
 }; 
 

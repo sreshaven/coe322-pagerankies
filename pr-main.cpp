@@ -129,6 +129,12 @@ int main(){
         }
 	cout << "Output: " << random_state3.as_string() << '\n';	
 		
+	vector<vector<double>> rankedP = random_state3.rankp();
+	cout << "Pages in Order by Rank: ";
+	for(int i = 0; i < rankedP.size(); i++){
+		cout << std::to_string((int)rankedP[i][1]) << ", ";	
+	}
+	cout << '\n';
 	return 0;
 	
 }
