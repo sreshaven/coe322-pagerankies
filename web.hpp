@@ -26,7 +26,7 @@ class Web {
         private:
     		int numOfPages;
                 vector<shared_ptr<Page>> pagesVector;
-		vector<vector<int>> webMatrix;
+		vector<vector<double>> webMatrix;
         public:
                 Web(int inputNum){
                         numOfPages = inputNum;
@@ -60,6 +60,8 @@ class Web {
 			return pagesVector;
 		}
 		
+		// creates links from random pages in the web to other random pages
+		// does not link to the same page and does not link to a page if it is already one of its links
 		void create_random_links(int numOfLinks){
 			for (int i = 0; i < numOfLinks; i++){
 				int randNum1 = realrandom_int(pagesVector.size());
@@ -72,21 +74,21 @@ class Web {
 			}
 		}
 
+		// rnadomly click on current page for length input
 		shared_ptr<Page> random_walk(shared_ptr<Page> inputPage, int length){
 			auto currentPage = inputPage;
 			int randNum = rand() % pagesVector.size();
-			// cout << "From: " << currentPage->as_string() << endl;	
 			for (int i = 0; i < length; i++){
 				currentPage = currentPage->random_click();
 				if (currentPage->global_ID() == -1){
 					randNum = realrandom_int(pagesVector.size());
 					currentPage = pagesVector[randNum]; 
 				}
-				// cout << "To: " << currentPage->as_string() << endl;		
 			}
 			return currentPage;
 		}
 
+		// single source shortest path algorithm
 		vector<int> sssp(shared_ptr<Page> inputPage){
 			vector<shared_ptr<Page>> current_front;
 			current_front.push_back(inputPage);
@@ -111,6 +113,7 @@ class Web {
 			return distances;
 		}	
 
+		// global click without matrix
 		probability_distribution globalclick(probability_distribution currentstate){
 			probability_distribution outputPD(numOfPages);
 			for (int i = 0; i < numOfPages; i++){
@@ -129,33 +132,51 @@ class Web {
 			return outputPD;
 		}
 
-		vector<vector<int>> makeMatrix(){
-			vector<int> matrix;
+		// make adjacency matrix for web graph
+		vector<vector<double>> makeMatrix(){
+			vector<double> matrix;
 			matrix.resize(numOfPages);
-			vector<vector<int>> outputMatrix;
+			vector<vector<double>> outputMatrix;
 			for (int i = 0; i < numOfPages; i++){
 				outputMatrix.push_back(matrix);
 			}
 			for (auto page : pagesVector){
+				int numOfNeighbors = page->get_neighbors().size();
 				for (auto neighbor : page->get_neighbors()){
-					outputMatrix[page->global_ID()][neighbor->global_ID()] = 1;
+					outputMatrix[page->global_ID()][neighbor->global_ID()] = 1.0 / numOfNeighbors;
 				}
 			}
-			for (int i = 0; i < numOfPages; i++){
+
+			// printing matrix
+			/* for (int i = 0; i < numOfPages; i++){
 				for (int j = 0; j < numOfPages; j++){
-					cout << outputMatrix[i][j];
+					cout << std::to_string(outputMatrix[i][j]).substr(0, 4) << " ";
 				}
 				cout << '\n';
-			}
+			} */
+
 			webMatrix = outputMatrix;
 			return outputMatrix;
 		}
 
+		// global click with matrix multiplication
 		probability_distribution globalclick2(probability_distribution currentstate){
                         probability_distribution outputPD(numOfPages);
-                	vector<vector<int>> adjMatrix = makeMatrix();
+			vector<vector<double>> adjMatrix = makeMatrix();
+			for (int j = 0; j < numOfPages; j++){
+				double new_pvalue = 0;
+				for (int i = 0; i < numOfPages; i++){
+					new_pvalue += adjMatrix[i][j] * currentstate.get_pvalue(i);
+				}
+				outputPD.set_pvalue(j, new_pvalue);
+				// if page does not have any links, add pvalue to random page
+				if (pagesVector[j]->get_neighbors().size() == 0){
+					int randNum = realrandom_int(pagesVector.size());
+                                        double newPValue = outputPD.get_pvalue(randNum) + outputPD.get_pvalue(pagesVector[j]->global_ID());
+                                        outputPD.set_pvalue(randNum, newPValue);
+				}
+			}
 			outputPD.normalize();        
 			return outputPD;
                 }
-
 };

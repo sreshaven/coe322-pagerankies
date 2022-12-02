@@ -12,16 +12,13 @@
 #include <ctime>
 #include <cstdlib>
 #include <random>
-#include <iomanip>
 using std::shared_ptr;
 using std::make_shared;
 
 
 int main(){
-	// srand(time(NULL));
-
+	// exercises 51.1 to 51.3
 	/* 
-	// exercise 51.1
 	auto homepage = make_shared<Page>("My Home Page");
 
 	// add links to the page as a vector, method click follows the link
@@ -45,7 +42,6 @@ int main(){
 		cout << "To: " << newpage -> as_string() << '\n';
 	
 	} */
-	
 
 	int netsize = 10;
 	int avglinks = 20;
@@ -70,7 +66,7 @@ int main(){
 			cout << landing_counts.at(i) << ',';
 		}
 	}
-	
+	cout << '\n';
 	// exercise 51.6
 	for (int i = 0; i < internet.all_pages().size(); i++){
 		vector<int> distances = internet.sssp(internet.all_pages()[i]);
@@ -83,13 +79,12 @@ int main(){
                 	}
         	}
 	}
+	cout << '\n';
 	
-	cout << std::fixed;
- 	cout.precision(4);
 	// exercise 51.7	
 	probability_distribution random_state(internet.number_of_pages());
 	random_state.set_random();
-	cout << "Initial Distribution: " << random_state.as_string() << '\n';
+	cout << "Random Distribution: " << random_state.as_string() << '\n';
 	
 	// exercise 51.8
 	probability_distribution test1(internet.number_of_pages());
@@ -102,13 +97,26 @@ int main(){
         cout << "Test 2 PD Input: " << output1.as_string() << '\n';
         cout << "Output of Test 2: " << output2.as_string() << '\n';
 	
+	cout << '\n';
 	probability_distribution random_state2(internet.number_of_pages());
         random_state2.set_random();
+	probability_distribution random_state2copy(internet.number_of_pages());
+	random_state2copy = random_state2;
+	cout << "Input: " << random_state2.as_string() << '\n';
 	for (int i = 0; i < netsize * 1.5; i++){
 		probability_distribution output3 = internet.globalclick(random_state2);
 		cout << "Output: " << output3.as_string() << '\n';
 		random_state2 = output3;
 	}
+	cout << '\n';
+	
+	//exercise 51.11
+	cout << "Input: " << random_state2copy.as_string() << '\n';
+	for (int i = 0; i < netsize * 1.5; i++){
+                probability_distribution output4 = internet.globalclick2(random_state2copy);
+                cout << "Output: " << output4.as_string() << '\n';
+                random_state2copy = output4;
+        }
 	
 	// exercise 51.10
 	internet.add_pages((avglinks * 4) + 1);
@@ -116,10 +124,6 @@ int main(){
 	for (int i = netsize + 1; i < internet.all_pages().size(); i++){
 		internet.all_pages()[i]->add_link(internet.all_pages()[netsize]);
 	}
-
-	/* for (auto page : internet.all_pages()) {
-                cout << "Starting page: " << page -> as_string() << '\n';
-        } */
 
 	probability_distribution random_state3(internet.number_of_pages());
         random_state3.set_random();
@@ -136,8 +140,8 @@ int main(){
 	}
 	cout << '\n';
 	
+	// exercise 51.11
 	// internet.makeMatrix();
 
-	return 0;
-	
+	return 0;	
 }
