@@ -25,13 +25,13 @@ class probability_distribution{
 		
 		void set_random(){
 			vector<double> count(distSize, 0);
-			for (int i = 0; i < 100; i++){
+			for (int i = 0; i < 100 * distSize; i++){
 				int num = realrandom_int(distSize);
 				count[num] = count[num] + 1.0;
 			}
 			
 			for (int j = 0; j < distSize; j++){
-				pvector[j] = count[j] / 100;
+				pvector[j] = count[j] / (100 * distSize);
 			}	
 		}
 		
@@ -64,7 +64,12 @@ class probability_distribution{
 				ptotal += pvector[i];
 			}
 			for (int j = 0; j < distSize; j++){
-				pvector[j] = pvector[j] / ptotal;
+				if (ptotal == 0){
+					pvector[j] = 0;
+				}
+				else {
+					pvector[j] = pvector[j] / ptotal;
+				}
 			}
 		}
 

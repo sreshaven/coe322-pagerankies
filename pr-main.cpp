@@ -169,7 +169,7 @@ int main(){
 
 	probability_distribution random_state4(internet.number_of_pages());
         random_state4.set_random();
-        for (int i = 0; i < internet.number_of_pages() * 1.5; i++){
+        for (int i = 0; i < internet.number_of_pages() * 20; i++){
                 probability_distribution output3 = internet.globalclick(random_state4);
                 random_state4 = output3;
         }
