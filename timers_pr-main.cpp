@@ -12,9 +12,12 @@
 #include <ctime>
 #include <cstdlib>
 #include <random>
+#include <chrono>
 using std::shared_ptr;
 using std::make_shared;
-
+using landing_clock = std::chrono::high_resolution_clock;
+using gc1_clock = std::chrono::high_resolution_clock;
+using gc2_clock = std::chrono::high_resolution_clock;
 
 int main(){
 	// exercises 51.1 to 51.3
@@ -50,25 +53,29 @@ int main(){
 	internet.create_random_links(avglinks);	
 	
 	// exercise 51.5
+	auto start_time = landing_clock::now();
 	vector<int> landing_counts(internet.number_of_pages(), 0);
 	for (auto page : internet.all_pages()) {
-		cout << "Starting page: " << page -> as_string() << '\n';	
+		//cout << "Starting page: " << page -> as_string() << '\n';	
 		for (int iwalk=0; iwalk<50; iwalk++){
 			auto endpage = internet.random_walk(page, 2*avglinks);
 			landing_counts.at(endpage->global_ID())++;
 		}
 	}
-	cout << "Landing counts: ";	
+	//cout << "Landing counts: ";	
 	for (int i = 0; i < landing_counts.size(); i++){
 		if (i == landing_counts.size() - 1){
-			cout << landing_counts.at(i) << '\n';
+			//cout << landing_counts.at(i) << '\n';
 		} else {
-			cout << landing_counts.at(i) << ',';
+			//cout << landing_counts.at(i) << ',';
 		}
 	}
 	cout << '\n';
-	// exercise 51.6
-	for (int i = 0; i < internet.all_pages().size(); i++){
+	auto duration = landing_clock::now()-start_time;
+	auto microsec_duration = std::chrono::duration_cast<std::chrono::microseconds>(duration);
+	cout <<"LANDING COUNT TIMER: " << microsec_duration.count() << " microsec\n";
+	// exercise 51.6 
+	/*for (int i = 0; i < internet.all_pages().size(); i++){
 		vector<int> distances = internet.sssp(internet.all_pages()[i]);
         	cout << "Distances from " << internet.all_pages()[i]->getName() << ": ";
         	for (int i = 0; i < distances.size(); i++){
@@ -87,7 +94,7 @@ int main(){
 	cout << "Random Distribution: " << random_state.as_string() << '\n';
 	
 	// exercise 51.8
-	/*
+
 	probability_distribution test1(internet.number_of_pages());
 	test1.set_pvalue(0, 1.0);
 	probability_distribution output1 = internet.globalclick(test1);
@@ -97,7 +104,7 @@ int main(){
 	probability_distribution output2 = internet.globalclick(output1);
         cout << "Test 2 PD Input: " << output1.as_string() << '\n';
         cout << "Output of Test 2: " << output2.as_string() << '\n';
-	*/
+	
 
 	cout << '\n';
 	
@@ -112,9 +119,10 @@ int main(){
 	}
 	cout << "Output: " << random_state2.as_string() << '\n';
 	cout << '\n';
-	
+*/
 	// global click 1 with numOfTrials random trials
-	/* probability_distribution gc1(internet.number_of_pages());
+	start_time = gc1_clock::now();
+	probability_distribution gc1(internet.number_of_pages());
 	int numOfTrials = 100;
 	for (int j = 0; j < numOfTrials; j++){
 		probability_distribution randompd(internet.number_of_pages());
@@ -128,12 +136,15 @@ int main(){
 		}	
 	}
 	gc1.normalize();
-	cout << "Output: " << gc1.as_string() << '\n';
-	cout << '\n';*/
+	//cout << "Output: " << gc1.as_string() << '\n';
+	cout << '\n';
+	duration = gc1_clock::now()-start_time;
+	microsec_duration = std::chrono::duration_cast<std::chrono::microseconds>(duration);
+	cout << "GC1 CLOCK: " << microsec_duration.count() << " microseconds\n";
 
 	//exercise 51.11
 	// one trial of global click 2
-	probability_distribution random_state3(internet.number_of_pages());
+	/*probability_distribution random_state3(internet.number_of_pages());
         random_state3.set_random();
 	cout << "Input: " << random_state3.as_string() << '\n';
 	for (int i = 0; i < 20; i++){
@@ -142,9 +153,10 @@ int main(){
         }
 	cout << "Output: " << random_state3.as_string() << '\n';
 	cout << '\n';
-	
+	*/
 	// global click 2 with numOfTrials random trials
-	/* probability_distribution gc2(internet.number_of_pages());
+	start_time = gc2_clock::now();
+	probability_distribution gc2(internet.number_of_pages());
         for (int j = 0; j < numOfTrials; j++){
                 probability_distribution randompd(internet.number_of_pages());
                 randompd.set_random();
@@ -157,11 +169,14 @@ int main(){
                 }
         }
         gc2.normalize();
-        cout << "Output: " << gc2.as_string() << '\n';
-	cout << '\n';*/
+        //cout << "Output: " << gc2.as_string() << '\n';
+	cout << '\n';
+	duration = gc2_clock::now()-start_time;
+	microsec_duration = std::chrono::duration_cast<std::chrono::microseconds>(duration);
+	cout << "GC2 CLOCK: " << microsec_duration.count() << " microsec\n";
 
 	// exercise 51.10
-	internet.add_pages((avglinks * 4) + 1);
+	/*internet.add_pages((avglinks * 4) + 1);
 
 	for (int i = netsize + 1; i < internet.all_pages().size(); i++){
 		internet.all_pages()[i]->add_link(internet.all_pages()[netsize]);
@@ -169,7 +184,7 @@ int main(){
 
 	probability_distribution random_state4(internet.number_of_pages());
         random_state4.set_random();
-        for (int i = 0; i < internet.number_of_pages() * 10; i++){
+        for (int i = 0; i < internet.number_of_pages() * 1.5; i++){
                 probability_distribution output3 = internet.globalclick(random_state4);
                 random_state4 = output3;
         }
@@ -186,5 +201,5 @@ int main(){
 	// exercise 51.11
 	//internet.printMatrix();
 
-	return 0;	
+	return 0;	*/
 }
