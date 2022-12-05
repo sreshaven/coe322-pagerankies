@@ -43,8 +43,8 @@ int main(){
 	
 	} */
 
-	int netsize = 10;
-	int avglinks = 20;
+	int netsize = 100;
+	int avglinks = 200;
 
 	Web internet(netsize);
 	internet.create_random_links(avglinks);	
@@ -53,7 +53,7 @@ int main(){
 	vector<int> landing_counts(internet.number_of_pages(), 0);
 	for (auto page : internet.all_pages()) {
 		cout << "Starting page: " << page -> as_string() << '\n';	
-		for (int iwalk=0; iwalk<5; iwalk++){
+		for (int iwalk=0; iwalk<50; iwalk++){
 			auto endpage = internet.random_walk(page, 2*avglinks);
 			landing_counts.at(endpage->global_ID())++;
 		}
@@ -87,6 +87,7 @@ int main(){
 	cout << "Random Distribution: " << random_state.as_string() << '\n';
 	
 	// exercise 51.8
+	/*
 	probability_distribution test1(internet.number_of_pages());
 	test1.set_pvalue(0, 1.0);
 	probability_distribution output1 = internet.globalclick(test1);
@@ -96,28 +97,69 @@ int main(){
 	probability_distribution output2 = internet.globalclick(output1);
         cout << "Test 2 PD Input: " << output1.as_string() << '\n';
         cout << "Output of Test 2: " << output2.as_string() << '\n';
-	
+	*/
+
 	cout << '\n';
+	
+	// one trial with global click 1
 	probability_distribution random_state2(internet.number_of_pages());
         random_state2.set_random();
-	probability_distribution random_state2copy(internet.number_of_pages());
-	random_state2copy = random_state2;
 	cout << "Input: " << random_state2.as_string() << '\n';
-	for (int i = 0; i < netsize * 1.5; i++){
+	for (int i = 0; i < 20; i++){
 		probability_distribution output3 = internet.globalclick(random_state2);
-		cout << "Output: " << output3.as_string() << '\n';
+		// cout << "Output: " << output3.as_string() << '\n';
 		random_state2 = output3;
 	}
+	cout << "Output: " << random_state2.as_string() << '\n';
 	cout << '\n';
 	
+	// global click 1 with numOfTrials random trials
+	/* probability_distribution gc1(internet.number_of_pages());
+	int numOfTrials = 100;
+	for (int j = 0; j < numOfTrials; j++){
+		probability_distribution randompd(internet.number_of_pages());
+        	randompd.set_random();
+        	for (int i = 0; i < 20; i++){
+                	probability_distribution outputpd = internet.globalclick(randompd);
+                	randompd = outputpd;
+        	}
+        	for (int k = 0; k < numOfTrials; k++){
+			gc1.add_pvalue(k, randompd.get_pvalue(k));
+		}	
+	}
+	gc1.normalize();
+	cout << "Output: " << gc1.as_string() << '\n';
+	cout << '\n';*/
+
 	//exercise 51.11
-	cout << "Input: " << random_state2copy.as_string() << '\n';
-	for (int i = 0; i < netsize * 1.5; i++){
-                probability_distribution output4 = internet.globalclick2(random_state2copy);
-                cout << "Output: " << output4.as_string() << '\n';
-                random_state2copy = output4;
+	// one trial of global click 2
+	probability_distribution random_state3(internet.number_of_pages());
+        random_state3.set_random();
+	cout << "Input: " << random_state3.as_string() << '\n';
+	for (int i = 0; i < 20; i++){
+                probability_distribution output4 = internet.globalclick2(random_state3);
+                random_state3 = output4;
         }
+	cout << "Output: " << random_state3.as_string() << '\n';
+	cout << '\n';
 	
+	// global click 2 with numOfTrials random trials
+	/* probability_distribution gc2(internet.number_of_pages());
+        for (int j = 0; j < numOfTrials; j++){
+                probability_distribution randompd(internet.number_of_pages());
+                randompd.set_random();
+                for (int i = 0; i < 20; i++){
+                        probability_distribution outputpd = internet.globalclick2(randompd);
+                        randompd = outputpd;
+                }
+                for (int k = 0; k < numOfTrials; k++){
+                        gc2.add_pvalue(k, randompd.get_pvalue(k));
+                }
+        }
+        gc2.normalize();
+        cout << "Output: " << gc2.as_string() << '\n';
+	cout << '\n';*/
+
 	// exercise 51.10
 	internet.add_pages((avglinks * 4) + 1);
 
@@ -125,15 +167,16 @@ int main(){
 		internet.all_pages()[i]->add_link(internet.all_pages()[netsize]);
 	}
 
-	probability_distribution random_state3(internet.number_of_pages());
-        random_state3.set_random();
-        for (int i = 0; i < 5; i++){
-                probability_distribution output3 = internet.globalclick(random_state2);
-                random_state3 = output3;
+	probability_distribution random_state4(internet.number_of_pages());
+        random_state4.set_random();
+        for (int i = 0; i < internet.number_of_pages() * 1.5; i++){
+                probability_distribution output3 = internet.globalclick(random_state4);
+                random_state4 = output3;
         }
-	cout << "Output: " << random_state3.as_string() << '\n';	
-		
-	vector<vector<double>> rankedP = random_state3.rankp();
+	cout << "Output: " << random_state4.as_string() << '\n';	
+	
+	// page # = netsize is the artificially important page and should be ranked at the top	
+	vector<vector<double>> rankedP = random_state4.rankp();
 	cout << "Pages in Order by Rank: ";
 	for(int i = 0; i < rankedP.size(); i++){
 		cout << std::to_string((int)rankedP[i][1]) << ", ";	
@@ -141,7 +184,7 @@ int main(){
 	cout << '\n';
 	
 	// exercise 51.11
-	// internet.makeMatrix();
+	//internet.printMatrix();
 
 	return 0;	
 }

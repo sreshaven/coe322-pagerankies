@@ -159,6 +159,34 @@ class Web {
 			return outputMatrix;
 		}
 
+		// print adjacency matrix
+		void printMatrix(){
+                        vector<int> matrix;
+                        matrix.resize(numOfPages);
+                        vector<vector<int>> outputMatrix;
+                        for (int i = 0; i < numOfPages; i++){
+                                outputMatrix.push_back(matrix);
+                        }
+                        for (auto page : pagesVector){
+                                for (auto neighbor : page->get_neighbors()){
+                                        outputMatrix[page->global_ID()][neighbor->global_ID()] = 1;
+                                }
+                        }
+
+                        // printing matrix
+                        for (int i = 0; i < numOfPages; i++){
+                                for (int j = 0; j < numOfPages; j++){
+					if (j < numOfPages - 1){
+						cout << std::to_string(outputMatrix[i][j]) << ",";
+					}
+					else {
+						cout << std::to_string(outputMatrix[i][j]);
+					}
+                                }
+                                cout << '\n';
+                        }
+                }
+
 		// global click with matrix multiplication
 		probability_distribution globalclick2(probability_distribution currentstate){
                         probability_distribution outputPD(numOfPages);

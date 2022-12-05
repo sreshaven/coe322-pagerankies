@@ -51,6 +51,12 @@ class probability_distribution{
 		void set_pvalue(int index, double newPValue){
 			pvector[index] = newPValue;
 		}
+		
+		// add to the pvalue
+		void add_pvalue(int index, double addPValue){
+                        pvector[index] += addPValue;
+                }
+
 		//set whole distribution to random and normalize so sum of prob is 1
 		void normalize(){
 			double ptotal = 0;
